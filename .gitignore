@@ -17,3 +17,5 @@ yarn-error.log
 
 # Ignore system files
 .DS_StoreCreova_Backup.zip
+Creova_Backup.zip
+frontend/.next/cache/
