@@ -1,59 +1,247 @@
-import { Box, Heading, Text, Container, VStack, SimpleGrid, Button, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { FaBolt, FaUsers, FaDollarSign, FaCheckCircle, FaGlobe, FaChartLine } from "react-icons/fa";
-import Footer from '../components/Footer';
+import { Box, Heading, Text, Container, VStack, SimpleGrid, Flex, Button, HStack, useColorModeValue } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import { FaCoins, FaUsers, FaHandshake, FaClock, FaDollarSign, FaLock, FaCheckCircle } from "react-icons/fa";
+import NextLink from "next/link";
+import Footer from "../components/Footer";
+
+const MotionBox = motion(Box);
+
+const solutions = [
+  {
+    icon: FaCoins,
+    title: "Crowdfunding",
+    text: "Launch high-impact projects with instant, community-driven funding—no intermediaries required.",
+  },
+  {
+    icon: FaUsers,
+    title: "Treasury Grants",
+    text: "Secure strategic funding for high-impact initiatives through transparent, community-voted grants.",
+  },
+  {
+    icon: FaHandshake,
+    title: "Tokenised Revenue Sharing",
+    text: "Share your project’s success with backers via tokenised future earnings, fostering community investment.   COMING SOON",
+  },
+];
 
 export default function Solutions() {
-    const router = useRouter();
+  // Dynamic colors based on color mode, matching index.js
+  const bgGradient = useColorModeValue("linear(to-br, #14B8A6, #ffffff)", "linear(to-br, #0D9488, #1A202C)");
+  const textColor = useColorModeValue("gray.900", "white");
+  const subTextColor = useColorModeValue("gray.700", "gray.300");
+  const cardBg = useColorModeValue("white", "gray.800");
+  const shadowColor = useColorModeValue("rgba(0, 0, 0, 0.2)", "rgba(255, 255, 255, 0.1)");
 
-    return (
-        <>
-            <Box minH="100vh" bgGradient="linear(to-br, #14B8A6, #ffffff)" py={20} pt={28}>
-                {/* Hero Section */}
-                <Container maxW="container.lg" textAlign="center" mb={16}>
-                    <Heading as="h1" size="2xl" fontWeight="bold" color="gray.900">
-                        The Future of Creator Funding Starts Here
-                    </Heading>
-                    <Text fontSize="lg" color="gray.700" mt={4} maxW="800px" mx="auto">
-                        Say goodbye to slow approvals, high-interest loans, and predatory investors. Creova redefines how creators access funding—decentralised, instant, and fair.
-                    </Text>
-                </Container>
+  return (
+    <Flex
+      direction="column"
+      minH="100vh"
+      bgGradient={bgGradient}
+      align="center"
+      justify="flex-start"
+      textAlign="center"
+      pt="64px"
+      overflow="hidden"
+    >
+      {/* Hero Section */}
+      <MotionBox
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        maxW="container.lg"
+        px={4}
+        py={20}
+      >
+        <Heading
+          as="h1"
+          size={{ base: "xl", md: "3xl" }}
+          fontWeight="extrabold"
+          color="white" // Matches index.js hero text
+          lineHeight={1.3}
+          textShadow={useColorModeValue("0 2px 8px rgba(0, 0, 0, 0.5)", "0 4px 12px rgba(0, 0, 0, 0.9)")}
+          fontFamily="Poppins, sans-serif"
+        >
+          Solutions for High-Impact Funding
+        </Heading>
+        <Text
+          fontSize={{ base: "md", md: "lg" }}
+          color="white" // Matches index.js hero text
+          mt={6}
+          maxW="800px"
+          mx="auto"
+          lineHeight={1.7}
+          textShadow={useColorModeValue("0 2px 4px rgba(0, 0, 0, 0.8)", "0 2px 6px rgba(0, 0, 0, 0.9)")}
+        >
+          Creova offers innovative funding solutions to empower communities and creators, bringing <strong>high-impact projects</strong> to life with speed and transparency.
+        </Text>
+      </MotionBox>
 
-                {/* Core Solutions Section */}
-                <Container maxW="container.xl" py={16}>
-                    <Heading as="h2" size="xl" textAlign="center" mb={10} color="gray.900">
-                        Why Choose Creova?
-                    </Heading>
-                    <SimpleGrid columns={[1, 2, 3]} spacing={10}>
-                        {[
-                            { icon: FaBolt, title: "Instant Funding", text: "Immediate access to funds via blockchain-based smart contracts." },
-                            { icon: FaUsers, title: "Community-Backed", text: "Transparent, democratic decisions made by creators, not gatekeepers." },
-                            { icon: FaDollarSign, title: "No Debt or Equity Loss", text: "Keep full ownership without loans or equity dilution." },
-                            { icon: FaCheckCircle, title: "Transparent & Secure", text: "On-chain processes guarantee security and full transparency." },
-                            { icon: FaGlobe, title: "Global Accessibility", text: "Open to creators worldwide, breaking traditional barriers." },
-                            { icon: FaChartLine, title: "Tokenised Revenue", text: "Innovative revenue-sharing models that empower creators financially." }
-                        ].map((solution, index) => (
-                            <VStack key={index} p={8} borderRadius="2xl" bg="white" boxShadow="2xl" textAlign="center" spacing={5}>
-                                <Flex align="center" justify="center" bg="teal.500" borderRadius="full" width="70px" height="70px">
-                                    <solution.icon size="36px" color="white" />
-                                </Flex>
-                                <Heading as="h3" size="lg" color="gray.900">{solution.title}</Heading>
-                                <Text fontSize="md" color="gray.600">{solution.text}</Text>
-                            </VStack>
-                        ))}
-                    </SimpleGrid>
-                </Container>
+      {/* Solutions Section */}
+      <Container maxW="container.xl" py={14}>
+        <Heading
+          as="h2"
+          size={{ base: "lg", md: "2xl" }}
+          mb={10}
+          fontWeight="bold"
+          color={textColor}
+          fontFamily="Poppins, sans-serif"
+          textShadow={`0 1px 3px ${shadowColor}`}
+        >
+          Our Funding Solutions
+          <Box mt={3} width="60px" height="4px" bgGradient="linear(to-r, teal.400, teal.500)" borderRadius="full" mx="auto" />
+        </Heading>
+        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>
+          {solutions.map((solution, idx) => (
+            <MotionBox
+              key={idx}
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 * idx }}
+            >
+              <VStack
+                spacing={5}
+                p={8}
+                bg={cardBg}
+                borderRadius="3xl"
+                boxShadow={`0 12px 32px ${shadowColor}`}
+                minH="300px"
+                _hover={{ transform: "translateY(-6px)", boxShadow: `0 16px 40px ${shadowColor}` }}
+                transition="all 0.3s ease"
+              >
+                <Box
+                  bg="teal.500"
+                  p={5}
+                  borderRadius="full"
+                  boxShadow={`0 4px 8px ${shadowColor}`}
+                >
+                  <motion.div whileHover={{ rotate: 360, transition: { duration: 0.8 } }}>
+                    <solution.icon size="48px" color="white" />
+                  </motion.div>
+                </Box>
+                <Heading as="h3" size="md" color={textColor} fontFamily="Poppins, sans-serif">
+                  {solution.title}
+                </Heading>
+                <Text color={subTextColor} lineHeight={1.7} fontSize="md">
+                  {solution.text}
+                </Text>
+              </VStack>
+            </MotionBox>
+          ))}
+        </SimpleGrid>
+      </Container>
 
-                {/* Call-to-Action */}
-                <Container maxW="container.md" textAlign="center" mt={10}>
-                    <Button size="lg" colorScheme="teal" px={8} py={6} fontSize="xl" onClick={() => router.push("/funding")}>
-                        Apply for Funding Now
-                    </Button>
-                </Container>
-            </Box>
+      {/* Traditional Funding vs Creova Section */}
+      <Container maxW="container.xl" py={14}>
+        <Heading
+          as="h2"
+          size={{ base: "lg", md: "2xl" }}
+          mb={10}
+          fontWeight="bold"
+          color={textColor}
+          fontFamily="Poppins, sans-serif"
+          textShadow={`0 1px 3px ${shadowColor}`}
+        >
+          Traditional Funding vs. Creova
+          <Box mt={3} width="60px" height="4px" bgGradient="linear(to-r, teal.400, teal.500)" borderRadius="full" mx="auto" />
+        </Heading>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
+          <MotionBox
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            bg={useColorModeValue("gray.100", "gray.700")}
+            p={8}
+            borderRadius="3xl"
+            boxShadow={`0 12px 32px ${shadowColor}`}
+            _hover={{ transform: "translateY(-6px)", boxShadow: `0 16px 40px ${shadowColor}` }}
+          >
+            <Heading as="h3" size="lg" mb={6} color={useColorModeValue("gray.800", "white")} fontFamily="Poppins, sans-serif">
+              Traditional Funding
+            </Heading>
+            <VStack spacing={4} align="start" color={subTextColor}>
+              <HStack spacing={3}>
+                <FaClock size="20px" color={useColorModeValue("gray.500", "gray.400")} />
+                <Text>Slow approvals delay progress</Text>
+              </HStack>
+              <HStack spacing={3}>
+                <FaDollarSign size="20px" color={useColorModeValue("gray.500", "gray.400")} />
+                <Text>High fees reduce project funds</Text>
+              </HStack>
+              <HStack spacing={3}>
+                <FaLock size="20px" color={useColorModeValue("gray.500", "gray.400")} />
+                <Text>Opaque processes limit trust</Text>
+              </HStack>
+            </VStack>
+          </MotionBox>
+          <MotionBox
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            bgGradient={useColorModeValue("linear(to-br, teal.400, teal.100)", "linear(to-br, teal.600, teal.900)")}
+            p={8}
+            borderRadius="3xl"
+            boxShadow={`0 12px 32px ${shadowColor}`}
+            _hover={{ transform: "translateY(-6px)", boxShadow: `0 16px 40px ${shadowColor}` }}
+          >
+            <Heading as="h3" size="lg" mb={6} color="white" fontFamily="Poppins, sans-serif">
+              Creova Funding
+            </Heading>
+            <VStack spacing={4} align="start" color="white">
+              <HStack spacing={3}>
+                <FaCheckCircle size="20px" color="white" />
+                <Text>Instant funding accelerates impact</Text>
+              </HStack>
+              <HStack spacing={3}>
+                <FaCoins size="20px" color="white" />
+                <Text>Low fees maximise project funds</Text>
+              </HStack>
+              <HStack spacing={3}>
+                <FaUsers size="20px" color="white" />
+                <Text>Community-driven transparency</Text>
+              </HStack>
+            </VStack>
+          </MotionBox>
+        </SimpleGrid>
+      </Container>
 
-            {/* Footer outside Box to ensure it sits correctly at the bottom */}
-            <Footer />
-        </>
-    );
+      {/* CTA Section */}
+      <Container maxW="container.xl" py={14}>
+        <Flex
+          direction={{ base: "column", md: "row" }}
+          align="center"
+          justify="space-between"
+          bgGradient={useColorModeValue("linear(to-br, teal.400, teal.100)", "linear(to-br, teal.600, teal.900)")}
+          borderRadius="2xl"
+          p={10}
+          boxShadow={`0 16px 48px ${shadowColor}`}
+        >
+          <Box textAlign={{ base: "center", md: "left" }}>
+            <Heading as="h2" size="xl" mb={4} color={textColor} fontFamily="Poppins, sans-serif">
+              Ready to Fund Your Impact?
+            </Heading>
+            <Text fontSize="lg" color={subTextColor}>
+              Start your high-impact journey with Creova today.
+            </Text>
+          </Box>
+          <Button
+            as={NextLink}
+            href="/funding"
+            colorScheme="teal"
+            size="lg"
+            px={10}
+            mt={{ base: 8, md: 0 }}
+            borderRadius="full"
+            _hover={{ transform: "translateY(-4px)", boxShadow: `0 8px 24px ${shadowColor}` }}
+          >
+            Start Now
+          </Button>
+        </Flex>
+      </Container>
+
+      <Footer />
+    </Flex>
+  );
 }

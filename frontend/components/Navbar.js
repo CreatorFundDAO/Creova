@@ -1,86 +1,251 @@
-import { Box, Flex, Button, Link, Image, IconButton, useColorMode, useColorModeValue } from "@chakra-ui/react";
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { 
+    Box, Flex, Button, Link, Image, IconButton, useColorMode, useColorModeValue, 
+    Menu, MenuButton, MenuList, MenuItem 
+} from "@chakra-ui/react";
+import { MoonIcon, SunIcon, ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { px } from "framer-motion";
+
+const GOLDEN_RATIO = 1.618; // Used for proportions
 
 const Navbar = () => {
     const { colorMode, toggleColorMode } = useColorMode();
     const router = useRouter();
 
-    const navBg = useColorModeValue("linear(to-r, #14B8A6, #FFFFFF)", "#27272A");
-    const navColor = useColorModeValue("black", "white");
-    const hoverBg = useColorModeValue("teal.500", "teal.300");
+    // Dynamic styles using useColorModeValue
+    const navBg = useColorModeValue(
+        "linear(to-r, #14B8A6, #FFFFFF)",  // Light mode
+        "linear(to-br, #0D9488, #1A202C)"  // Dark mode
+    );
+    
+    const buttonTextColor = useColorModeValue(
+        "black",    // Light mode
+        "white"     // Dark mode
+    );
+    
+    const hoverBg = useColorModeValue(
+        "teal.500",  // Light mode
+        "teal.300"   // Dark mode
+    );
+    
+    const menuBg = useColorModeValue(
+        "white",     // Light mode
+        "gray.800"   // Dark mode
+    );
+    
+    const toggleButtonBg = useColorModeValue(
+        "gray.300",  // Light mode (always light gray)
+        "gray.600"   // Dark mode (darker gray for visibility)
+    );
+
+    // Navbar Size Adjustments
+    const navbarHeight = 64; // Fixed navbar height
+    const logoHeight = 40; // Explicitly set logo height for perfect centering
 
     return (
-<Box
-  bgGradient="linear(to-r, #14B8A6, #FFFFFF)"
-  px={8}
-  py={4} // adjust this for centering
-  position="fixed"
-  top="0"
-  width="100%"
-  height="70px"
-zIndex="100"
-  boxShadow="none"
-  borderBottom="none"
-  border="none"
->
-            <Flex align="center" justify="space-between">
-                {/* Logo */}
-                <Link href="/" position="relative">
+        <Box
+            bgGradient={navBg}
+            px={8}
+            py={0}
+            position="fixed"
+            top="0"
+            width="100%"
+            height={`${navbarHeight}px`}
+            zIndex="100"
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            boxShadow="none"
+            borderBottom="0px solid transparent"
+        >
+            {/* Logo - Perfectly Centered */}
+            <Link href="/" passHref>
+                <Flex align="center" height="100%">
                     <Image
                         src="/logo.png"
                         alt="Creova Logo"
-                        height="135px"
-                        maxWidth="480px"
+                        height={`${logoHeight}px`}
                         objectFit="contain"
-                        position="absolute"
-                        top="50%"
-                        left="0"
-                        transform="translateY(-50%)"
-                    />
-                </Link>
-
-                {/* Navigation Links */}
-                <Flex gap={6} align="center">
-                    {[
-  { name: "Our Solutions", path: "/solutions" },
-  { name: "About Creova", path: "/about" },
-  { name: "Funding", path: "/funding" },
-  { name: "User Dashboard", path: "/dashboard" },
-  { name: "Transparency", path: "/transparency" },
-].map((link) => (
-                        <Button
-                            key={link.name}
-                            color={navColor}
-                            fontSize="lg"
-                            fontWeight="bold"
-                            variant="ghost"
-                            _hover={{ bg: hoverBg, color: "white", transform: "scale(1.05)" }}
-                            onClick={() => router.push(link.path)}
-                        >
-                            {link.name}
-                        </Button>
-                    ))}
-
-                    {/* Connect Wallet (RainbowKit) */}
-                    <ConnectButton
-                        showBalance={false}
-                        chainStatus="none"
-                        accountStatus="address"
-                    />
-
-                    {/* Dark Mode Toggle */}
-                    <IconButton
-                        aria-label="Toggle theme"
-                        icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-                        onClick={toggleColorMode}
-                        color={navColor}
-                        _hover={{ bg: hoverBg, transform: "scale(1.1)", color: "white" }}
                     />
                 </Flex>
+            </Link>
+
+            {/* Desktop Navigation - Centered */}
+            <Flex gap={6} align="center" display={{ base: "none", md: "flex" }}>
+                <Link href="/about" passHref>
+                    <Button 
+                        variant="ghost" 
+                        fontSize="lg" 
+                        fontWeight="bold" 
+                        color={buttonTextColor} 
+                        _hover={{ bg: hoverBg, color: "white" }}
+                    >
+                        About
+                    </Button>
+                </Link>
+                <Link href="/solutions" passHref>
+                    <Button 
+                        variant="ghost" 
+                        fontSize="lg" 
+                        fontWeight="bold" 
+                        color={buttonTextColor} 
+                        _hover={{ bg: hoverBg, color: "white" }}
+                    >
+                        Our Solutions
+                    </Button>
+                </Link>
+                <Link href="/explore" passHref>
+                    <Button 
+                        variant="ghost" 
+                        fontSize="lg" 
+                        fontWeight="bold" 
+                        color={buttonTextColor} 
+                        _hover={{ bg: hoverBg, color: "white" }}
+                    >
+                        Discover Projects
+                    </Button>
+                </Link>
+
+                {/* Funding Dropdown */}
+                <Menu>
+                    <MenuButton 
+                        as={Button} 
+                        rightIcon={<ChevronDownIcon />} 
+                        variant="ghost" 
+                        fontSize="lg" 
+                        fontWeight="bold" 
+                        color={buttonTextColor} 
+                        _hover={{ bg: hoverBg, color: "white" }}
+                    >
+                        Funding
+                    </MenuButton>
+                    <MenuList 
+                        bg={menuBg} 
+                        borderColor={hoverBg}
+                        color={buttonTextColor}
+                    >
+                        <MenuItem 
+                            onClick={() => router.push("/funding")} 
+                            _hover={{ bg: hoverBg, color: "white" }}
+                        >
+                            Launch a Project
+                        </MenuItem>
+                        <MenuItem 
+                            onClick={() => router.push("/grants")} 
+                            _hover={{ bg: hoverBg, color: "white" }}
+                        >
+                            Creova Grants
+                        </MenuItem>
+                    </MenuList>
+                </Menu>
+
+                {/* Dashboard Dropdown */}
+                <Menu>
+                    <MenuButton 
+                        as={Button} 
+                        rightIcon={<ChevronDownIcon />} 
+                        variant="ghost" 
+                        fontSize="lg" 
+                        fontWeight="bold" 
+                        color={buttonTextColor} 
+                        _hover={{ bg: hoverBg, color: "white" }}
+                    >
+                        Dashboard
+                    </MenuButton>
+                    <MenuList 
+                        bg={menuBg} 
+                        borderColor={hoverBg}
+                        color={buttonTextColor}
+                    >
+                        <MenuItem 
+                            onClick={() => router.push("/dashboard")} 
+                            _hover={{ bg: hoverBg, color: "white" }}
+                        >
+                            Your Dashboard
+                        </MenuItem>
+                        <MenuItem 
+                            onClick={() => router.push("/transparency")} 
+                            _hover={{ bg: hoverBg, color: "white" }}
+                        >
+                            Transparency
+                        </MenuItem>
+                    </MenuList>
+                </Menu>
+
+                {/* Connect Wallet (Stays the same) */}
+                <Box ml={2}>
+                    <ConnectButton showBalance={false} chainStatus="none" accountStatus="address" />
+                </Box>
+
+                {/* Dark Mode Toggle */}
+                <IconButton
+                    aria-label="Toggle theme (Light/Dark Mode)"
+                    icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+                    onClick={toggleColorMode}
+                    color={buttonTextColor}
+                    bg={toggleButtonBg}
+                    _hover={{ bg: hoverBg, color: "white" }}
+                />
             </Flex>
+
+            {/* Mobile Menu (Hamburger Icon) */}
+            <Menu>
+                <MenuButton 
+                    as={IconButton} 
+                    icon={<HamburgerIcon />} 
+                    variant="outline" 
+                    display={{ base: "flex", md: "none" }} 
+                    color={buttonTextColor}
+                />
+                <MenuList 
+                    bg={menuBg} 
+                    borderColor={hoverBg}
+                    color={buttonTextColor}
+                >
+                    <MenuItem 
+                        onClick={() => router.push("/about")} 
+                        _hover={{ bg: hoverBg, color: "white" }}
+                    >
+                        About
+                    </MenuItem>
+                    <MenuItem 
+                        onClick={() => router.push("/solutions")} 
+                        _hover={{ bg: hoverBg, color: "white" }}
+                    >
+                        Our Solutions
+                    </MenuItem>
+                    <MenuItem 
+                        onClick={() => router.push("/explore")} 
+                        _hover={{ bg: hoverBg, color: "white" }}
+                    >
+                        Discover Projects
+                    </MenuItem>
+                    <MenuItem 
+                        onClick={() => router.push("/funding")} 
+                        _hover={{ bg: hoverBg, color: "white" }}
+                    >
+                        Launch a Project
+                    </MenuItem>
+                    <MenuItem 
+                        onClick={() => router.push("/grants")} 
+                        _hover={{ bg: hoverBg, color: "white" }}
+                    >
+                        Creova Grants
+                    </MenuItem>
+                    <MenuItem 
+                        onClick={() => router.push("/dashboard")} 
+                        _hover={{ bg: hoverBg, color: "white" }}
+                    >
+                        Your Dashboard
+                    </MenuItem>
+                    <MenuItem 
+                        onClick={() => router.push("/transparency")} 
+                        _hover={{ bg: hoverBg, color: "white" }}
+                    >
+                        Transparency
+                    </MenuItem>
+                </MenuList>
+            </Menu>
         </Box>
     );
 };

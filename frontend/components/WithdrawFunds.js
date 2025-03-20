@@ -4,7 +4,7 @@ import { Button, Spinner, useToast } from "@chakra-ui/react";
 import { getFundingPoolContract } from "../lib/getFundingPoolContract";
 import { useAccount } from "wagmi";
 
-const CONTRACT_ADDRESS = "0x2507243fF90DdaB47Acb002C958E66A4078f9Da8";
+const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_FUNDINGPOOL_ADDRESS; // ✅ Correct
 
 export default function WithdrawFunds({ campaignId }) {
     const { isConnected } = useAccount();
